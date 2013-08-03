@@ -38,7 +38,7 @@ def board():
   6|7|8
   """
 
-def crack_pattern(sha1sum):
+def crack(hashkey):
 
     print 'cracking in progress...'
     for i in range(MIN, MAX + 1):
@@ -47,9 +47,9 @@ def crack_pattern(sha1sum):
         for item in perms:
             pat = ''.join(str(v) for v in item)
             key = binascii.unhexlify(''.join('%02x' % (ord(c) - ord('0')) for c in pat))
-            sha1 = hashlib.sha1(key).hexdigest()
+            sha = hashlib.sha1(key).hexdigest()
 
-            if sha1 == sha1sum:
+            if sha == hashkey:
                 return pat
 
     return None
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     hashkey = f.read(hashlib.sha1().digest_size).encode('hex')
     f.close()
 
-    pat = crack_pattern(hashkey)
+    pat = crack(hashkey)
     print ''
 
     if pat is None:
